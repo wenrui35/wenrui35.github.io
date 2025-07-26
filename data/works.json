@@ -1,0 +1,18 @@
+{
+    "works": [
+        {
+            "id": 1,
+            "title": "示例作品1",
+            "description": "这是一幅示例插画作品，展示了我们的设计风格。",
+            "imageUrl": "assets/images/2024/07-month/sample1.jpg",
+            "createdDate": "2024-07-15"
+        },
+        {
+            "id": 2,
+            "title": "示例作品2",
+            "description": "这是另一幅示例插画作品，展示了我们的创意理念。",
+            "imageUrl": "assets/images/2024/07-month/sample2.jpg",
+            "createdDate": "2024-07-20"
+        }
+    ]
+}

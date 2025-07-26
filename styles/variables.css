@@ -1,0 +1,37 @@
+:root {
+  /* 浅色主题 */
+  --bg-primary: #ffffff;
+  --text-primary: #2d3436;
+  --border-color: #dfe6e9;
+  --bg-secondary: #f8f9fa;
+
+  &[data-theme="dark"] {
+    --bg-primary: #2d3436;
+    --text-primary: #ffffff;
+    --border-color: #636e72;
+    --bg-secondary: #404040;
+  }
+}
+
+/* 全局布局修正 */
+body {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--bg-primary);
+  transition: background 0.3s ease;
+}
+
+--primary-color: #457b9d;
+--secondary-color: #1d3557;
+--accent-color: #a8dadc;
+--text-dark: #333;
+--text-light: #f1faee;
+--border-radius: 8px;
+--transition-speed: 0.3s;
+--header-height: 80px;
+--mobile-breakpoint: 900px;
+--box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+--error-color: #e63946;
+--success-color: #2a9d8f;
+}

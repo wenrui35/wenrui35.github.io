@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品集 - 牛马手机壳</title>
+    <style>
+        /* 基础重置与布局 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding-top: 80px;
+            /* 为固定导航栏预留空间 */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 头部导航样式 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #457b9d;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 8px;
+            font-size: 1.8rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 25px;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #457b9d;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #457b9d;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: #1d3557;
+            font-weight: 600;
+        }
+
+        .cta-btn {
+            background-color: #457b9d;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+            margin-left: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: #1d3557;
+            transform: translateY(-2px);
+        }
+
+        .cta-btn::after {
+            display: none;
+        }
+
+        /* 移动端导航 */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.8rem;
+        }
+
+        /* 水印 */
+        .watermark::after {
+            content: '© SummerPainting';
+            position: fixed;
+            opacity: 0.1;
+            font-size: 40px;
+            transform: rotate(-30deg);
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* 动画定义 */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            nav li {
+                margin: 0;
+                text-align: center;
+            }
+
+            nav a {
+                display: block;
+                padding: 15px 0;
+                border-bottom: 1px solid #f5f5f5;
+            }
+
+            .cta-btn {
+                margin: 15px 0;
+                display: inline-block;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-active ul {
+                display: flex;
+            }
+        }
+
+        /* 作品集样式 */
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .gallery-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .gallery-item .info {
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body class="watermark">
+    <header>
+        <div class="header-container container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"><img src="photo/logo.jpg" weight=64 height=64 alt="logo"></span>
+                牛马手机壳
+            </a>
+
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="gallery.html" class="active">作品集</a></li>
+                    <li><a href="products.html">产品定制</a></li>
+                    <li><a href="copyright.html">版权声明</a></li>
+                    <li><a href="customize.html" class="cta-btn">定制设计</a></li>
+                </ul>
+            </nav>
+
+            <div class="menu-toggle" id="mobileMenu">
+                ☰
+            </div>
+        </div>
+    </header>
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobileMenu').addEventListener('click', function () {
+            document.getElementById('mainNav').classList.toggle('nav-active');
+        });
+
+        // 高亮当前页面导航
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('nav a');
+
+        navLinks.forEach(link => {
+            const linkPage = link.getAttribute('href');
+            if (currentPage === linkPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    </script>
+    <main class="container">
+        <h1>原创插画作品集</h1>
+        <p>浏览我们的原创插画作品，为您的手机壳选择独特设计</p>
+
+        <div class="gallery-grid" id="works-container">
+            <!-- 作品将通过JavaScript从data/works.json加载 -->
+            <div class="gallery-item">
+                <img src="assets/images/placeholder.jpg" alt="作品示例">
+                <div class="info">
+                    <h3>作品标题</h3>
+                    <p>作品描述将在这里显示</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 牛马手机壳 - 保留所有权利</p>
+        </div>
+    </footer>
+    <script>
+        // 从data/works.json加载作品数据
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.getElementById('works-container');
+
+            fetch('data/works.json')
+                .then(response => response.json())
+                .then(data => {
+                    // 清空占位内容
+                    container.innerHTML = '';
+
+                    // 遍历作品数据并生成HTML
+                    data.works.forEach(work => {
+                        const workItem = document.createElement('div');
+                        workItem.className = 'gallery-item';
+                        workItem.innerHTML = `
+                            <div class="image-container">
+                                <img src="${work.imageUrl}" alt="${work.title}">
+                                <div class="watermark">牛马手机壳 © ${new Date().getFullYear()}</div>
+                            </div>
+                            <div class="info">
+                                <h3>${work.title}</h3>
+                                <p>${work.description}</p>
+                                <small>创作日期: ${work.createdDate}</small>
+                            </div>
+                        `;
+                        container.appendChild(workItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('加载作品数据失败:', error);
+                    container.innerHTML = '<p class="error-message">作品数据加载失败，请稍后重试。</p>';
+                });
+        });
+    </script>
+</body>
+
+</html>

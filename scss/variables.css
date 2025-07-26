@@ -1,0 +1,12 @@
+:root {
+    --primary-color: #457b9d;
+    --secondary-color: #1d3557;
+    --accent-color: #a8dadc;
+    --text-dark: #333;
+    --text-light: #f1faee;
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+    --header-height: 80px;
+    --mobile-breakpoint: 900px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

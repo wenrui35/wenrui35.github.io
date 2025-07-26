@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品定制 - 牛马手机壳</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 产品定制页面特定样式 */
+        .logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 8px;
+            font-size: 1.8rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 25px;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #457b9d;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #457b9d;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: #1d3557;
+            font-weight: 600;
+        }
+
+        .cta-btn {
+            background-color: #457b9d;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+            margin-left: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: #1d3557;
+            transform: translateY(-2px);
+        }
+
+        .cta-btn::after {
+            display: none;
+        }
+
+        /* 移动端导航 */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.8rem;
+        }
+
+        /* 水印 */
+        .watermark::after {
+            content: '© SummerPainting';
+            position: fixed;
+            opacity: 0.1;
+            font-size: 40px;
+            transform: rotate(-30deg);
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* 动画定义 */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            nav li {
+                margin: 0;
+                text-align: center;
+            }
+
+            nav a {
+                display: block;
+                padding: 15px 0;
+                border-bottom: 1px solid #f5f5f5;
+            }
+
+            .cta-btn {
+                margin: 15px 0;
+                display: inline-block;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-active ul {
+                display: flex;
+            }
+        }
+
+        .order-btn {
+            background-color: #457b9d;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        .order-btn:hover {
+            background-color: #1d3557;
+        }
+        
+        /* 产品卡片样式 */
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .product-card {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-card h3 {
+            margin-top: 0;
+            color: #1d3557;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e63946;
+            margin: 15px 0;
+        }
+        
+        /* 表单样式优化 */
+        .order-form-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: 50px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #457b9d;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(69, 123, 157, 0.2);
+        }
+        
+        .error-message {
+            color: #e63946;
+            font-weight: 500;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body class="watermark">
+    <header>
+        <div class="header-container container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"><img src="photo/logo.jpg" weight=64 height=64 alt="logo"></span>
+                牛马手机壳
+            </a>
+
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="gallery.html">作品集</a></li>
+                    <li><a href="products.html" class="active">产品定制</a></li>
+                    <li><a href="copyright.html">版权声明</a></li>
+                    <li><a href="customize.html" class="cta-btn">定制设计</a></li>
+                </ul>
+            </nav>
+
+            <div class="menu-toggle" id="mobileMenu">
+                ☰
+            </div>
+        </div>
+    </header>
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobileMenu').addEventListener('click', function () {
+            document.getElementById('mainNav').classList.toggle('nav-active');
+        });
+
+        // 高亮当前页面导航
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('nav a');
+
+        navLinks.forEach(link => {
+            const linkPage = link.getAttribute('href');
+            if (currentPage === linkPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    </script>
+    <main class="container">
+        <h1>产品定制与价格</h1>
+        <p>选择适合您的产品类型，我们将为您提供优质的定制服务</p>
+
+        <div class="products-container" id="products-container">
+            <!-- 产品将通过JavaScript从data/prices.json加载 -->
+            <div class="product-card">
+                <h3>产品类型</h3>
+                <p>授权范围说明</p>
+                <div class="price">¥0.00</div>
+                <button class="order-btn">立即定制</button>
+            </div>
+        </div>
+
+        <!-- 订单表单 -->
+        <div class="order-form-section">
+            <h2>提交定制需求</h2>
+            <form id="order-form" action="https://formspree.io/f/mgvzoyjp" method="POST">
+                <div class="form-group">
+                    <label for="name">姓名:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">邮箱:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">电话:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-type">产品类型:</label>
+                    <select id="product-type" name="product-type" required>
+                        <option value="">请选择产品类型</option>
+                        <option value="digital">数字版使用权</option>
+                        <option value="physical">实体明信片</option>
+                        <option value="phone-case">手机壳定制</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="work-id">作品ID:</label>
+                    <input type="text" id="work-id" name="work-id" placeholder="如: 1" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">数量:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">定制要求:</label>
+                    <textarea id="message" name="message" rows="4" placeholder="请详细描述您的定制要求..."></textarea>
+                </div>
+                <button type="submit" class="order-btn">提交订单</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 牛马手机壳 - 保留所有权利</p>
+        </div>
+    </footer>
+    <script>
+        // 从data/prices.json加载产品信息
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.getElementById('products-container');
+            const orderForm = document.getElementById('order-form');
+            const productSelect = document.getElementById('product-type');
+            
+            // 示例产品数据
+            const productsData = {
+                "products": [
+                   
+                    {
+                        "type": "实体明信片",
+                        "authorization": "个人非商业使用",
+                        "description": "高级铜版纸印刷，尺寸 15×10cm",
+                        "price": 8888
+                    },
+                    {
+                        "type": "手机壳定制",
+                        "authorization": "个人非商业使用",
+                        "description": "适用于主流手机型号，高清印刷",
+                        "price": 8888
+                    },
+                    
+                ]
+            };
+
+            // 清空占位内容
+            container.innerHTML = '';
+
+            // 遍历产品数据并生成HTML
+            productsData.products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <h3>${product.type}</h3>
+                    <p><strong>授权范围:</strong> ${product.authorization}</p>
+                    <p>${product.description}</p>
+                    <div class="price">¥${product.price.toFixed(2)}</div>
+                    <button class="order-btn" data-type="${product.type}">立即定制</button>
+                `;
+                container.appendChild(productCard);
+                
+                // 为按钮添加点击事件
+                const btn = productCard.querySelector('.order-btn');
+                btn.addEventListener('click', function() {
+                    productSelect.value = product.type;
+                    document.getElementById('work-id').focus();
+                    
+                    // 滚动到表单区域
+                    document.querySelector('.order-form-section').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // 表单提交处理
+            orderForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 显示提交反馈
+                const submitBtn = orderForm.querySelector('.order-btn');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = '提交中...';
+                submitBtn.disabled = true;
+                
+                // 实际表单提交
+                fetch(this.action, {
+                    method: this.method,
+                    body: new FormData(this),
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('订单提交成功！我们会尽快联系您。');
+                        orderForm.reset();
+                    } else {
+                        alert('提交失败，请稍后重试。');
+                    }
+                })
+                .catch(error => {
+                    alert('网络错误，请检查您的连接。');
+                })
+                .finally(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

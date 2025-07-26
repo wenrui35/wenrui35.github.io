@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>牛马手机壳 - 原创插画手机壳定制</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 页面特定样式 */
+        .logo-icon img {
+            width: 64px;
+            height: 64px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(69, 123, 157, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: #1d3557;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #457b9d;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: #457b9d;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d3557;
+            transform: translateY(-3px);
+        }
+
+        .latest-works {
+            margin: 40px 0;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .work-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .work-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .work-info {
+            padding: 15px;
+            background-color: white;
+        }
+
+        .work-title {
+            font-size: 1.1rem;
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .work-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container container">
+            <a href=" " class="logo">
+                <span class="logo-icon"><img src="photo/logo.jpg" weight = 64 height = 64 alt="logo"></span>
+                牛马手机壳
+            </a >
+            
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="index.html" class="active">首页</a ></li>
+                    <li><a href="gallery.html">作品集</a ></li>
+                    <li><a href="products.html">产品定制</a ></li>
+                    <li><a href="copyright.html">版权声明</a ></li>
+                    <li><a href="customize.html" class="cta-btn">定制设计</a ></li>
+                </ul>
+            </nav>
+            
+            <div class="menu-toggle" id="mobileMenu">
+                ☰
+            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <!-- 公告区域 -->
+        <section class="announcement">
+            <div class="announcement-content">
+                <h2>最新公告</h2>
+                <p>2025年夏季新款手机壳已上线，全场定制享8折优惠，截止日期2025-08-31。</p >
+                <button class="close-btn">&times;</button>
+            </div>
+        </section>
+
+        <!-- 英雄区域 -->
+        <section class="hero">
+            <h1>牛马手机壳</h1>
+            <p>原创插画手机壳定制，为您的设备增添独特个性</p >
+            <a href="gallery.html" class="btn-primary">浏览全部作品</a >
+        </section>
+
+        <!-- 最新作品展示 -->
+        <section class="latest-works">
+            <h2>最新作品</h2>
+            <div id="works-container" class="grid-container"></div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 牛马手机壳 - 保留所有权利</p >
+        </div>
+    </footer>
+    
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobileMenu').addEventListener('click', function() {
+            document.getElementById('mainNav').classList.toggle('nav-active');
+        });
+        
+        // 关闭公告功能
+        document.querySelector('.close-btn').addEventListener('click', function () {
+            document.querySelector('.announcement').style.display = 'none';
+        });
+        
+        // 加载最新作品
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.getElementById('works-container');
+            
+            // 模拟数据加载
+            const mockWorks = [
+                {
+                    title: "夏日海洋系列",
+                    thumbnail: "https://via.placeholder.com/300x200/457b9d/ffffff?text=海洋系列",
+                    date: "2025-07-15"
+                },
+                {
+                    title: "森林奇遇插画",
+                    thumbnail: "https://via.placeholder.com/300x200/2a9d8f/ffffff?text=森林系列",
+                    date: "2025-07-10"
+                },
+                {
+                    title: "城市涂鸦艺术",
+                    thumbnail: "https://via.placeholder.com/300x200/e9c46a/000000?text=城市系列",
+                    date: "2025-07-05"
+                },
+                {
+                    title: "极光幻想主题",
+                    thumbnail: "https://via.placeholder.com/300x200/1d3557/ffffff?text=极光系列",
+                    date: "2025-06-28"
+                },
+                {
+                    title: "复古蒸汽朋克",
+                    thumbnail: "https://via.placeholder.com/300x200/6b705c/ffffff?text=复古系列",
+                    date: "2025-06-20"
+                },
+                {
+                    title: "简约几何美学",
+                    thumbnail: "https://via.placeholder.com/300x200/ffafcc/000000?text=几何系列",
+                    date: "2025-06-15"
+                }
+            ];
+            
+            // 显示作品
+            mockWorks.forEach((work, index) => {
+                const workCard = document.createElement('div');
+                workCard.className = 'work-card';
+                workCard.innerHTML = `
+                    <img src="${work.thumbnail}" alt="${work.title}">
+                    <div class="work-info">
+                        <h3 class="work-title">${work.title}</h3>
+                        <p class="work-date">${work.date}</p >
+                    </div>
+                `;
+                container.appendChild(workCard);
+                
+                // 延迟加载动画
+                setTimeout(() => {
+                    workCard.classList.add('loaded');
+                }, 100 * index);
+            });
+            
+            // 高亮当前页面导航
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                const linkPage = link.getAttribute('href');
+                if (currentPage === linkPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

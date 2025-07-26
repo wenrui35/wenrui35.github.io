@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>定制设计 - 牛马手机壳</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .customize-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .preview-area {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .preview-phone {
+            width: 300px;
+            height: 600px;
+            background: url('assets/images/phone-template.png') center/contain no-repeat;
+            position: relative;
+        }
+
+        .design-preview {
+            position: absolute;
+            width: 85%;
+            height: 75%;
+            top: 12%;
+            left: 7.5%;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .form-column {
+            padding-right: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .color-option.selected {
+            border-color: #457b9d;
+        }
+    </style>
+</head>
+
+<body class="watermark">
+    <header>
+        <div class="header-container container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🖼️</span>
+                牛马手机壳
+            </a>
+
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="gallery.html">作品集</a></li>
+                    <li><a href="products.html">产品定制</a></li>
+                    <li><a href="copyright.html">版权声明</a></li>
+                    <li><a href="customize.html" class="cta-btn active">定制设计</a></li>
+                </ul>
+            </nav>
+
+            <div class="menu-toggle" id="mobileMenu">
+                ☰
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>手机壳定制设计</h1>
+        
+        <div class="customize-container">
+            <div class="form-column">
+                <form id="design-form" action="https://formspree.io/f/mqazgojj" method="POST">
+                    <div class="form-group">
+                        <label for="design-style">设计风格：</label>
+                        <select id="design-style" class="form-control" name="design-style" required>
+                            <option value="">请选择设计风格</option>
+                            <option value="minimalist">极简风格</option>
+                            <option value="vintage">复古风格</option>
+                            <option value="illustration">插画风格</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>边框颜色：</label>
+                        <div class="color-picker">
+                            <div class="color-option" style="background:#ffffff" data-color="#ffffff"></div>
+                            <div class="color-option" style="background:#000000" data-color="#000000"></div>
+                            <div class="color-option" style="background:#457b9d" data-color="#457b9d"></div>
+                        </div>
+                        <input type="hidden" id="border-color" name="border-color" value="#ffffff">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="artwork">选择作品：</label>
+                        <select id="artwork" class="form-control" name="artwork" required>
+                            <option value="">请选择设计作品</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">个性文字（最多20字）：</label>
+                        <input type="text" id="message" class="form-control" name="message" maxlength="20">
+                    </div>
+
+                    <button type="submit" class="order-btn">提交定制</button>
+                </form>
+            </div>
+
+            <div class="preview-area">
+                <h3>实时预览</h3>
+                <div class="preview-phone">
+                    <div class="design-preview" id="design-preview"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 牛马手机壳 - 保留所有权利</p>
+        </div>
+    </footer>
+
+    <script>
+        // 颜色选择交互
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById('border-color').value = this.dataset.color;
+            });
+        });
+
+        // 加载可用作品
+        fetch('data/works.json')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('artwork');
+                data.forEach(work => {
+                    const option = document.createElement('option');
+                    option.value = work.id;
+                    option.textContent = `${work.title} (ID: ${work.id})`;
+                    select.appendChild(option);
+                });
+            });
+
+        // 实时预览更新
+        document.getElementById('design-form').addEventListener('change', function(e) {
+            const preview = document.getElementById('design-preview');
+            if(e.target.id === 'artwork') {
+                preview.style.backgroundImage = `url('assets/images/works/${e.target.value}.jpg')`;
+            }
+            if(e.target.id === 'message') {
+                preview.textContent = e.target.value;
+            }
+        });
+    </script>
+</body>
+</html>

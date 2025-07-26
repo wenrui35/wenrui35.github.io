@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>版权声明 - 牛马手机壳</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 版权页面特定样式 */
+        .logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 8px;
+            font-size: 1.8rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 25px;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #457b9d;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #457b9d;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: #1d3557;
+            font-weight: 600;
+        }
+
+        .cta-btn {
+            background-color: #457b9d;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+            margin-left: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: #1d3557;
+            transform: translateY(-2px);
+        }
+
+        .cta-btn::after {
+            display: none;
+        }
+
+        /* 移动端导航 */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.8rem;
+        }
+
+        .copyright-content {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .copyright-content h2 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .copyright-content p {
+            margin-bottom: 15px;
+        }
+
+        /* 水印 */
+        .watermark::after {
+            content: '© SummerPainting';
+            position: fixed;
+            opacity: 0.1;
+            font-size: 40px;
+            transform: rotate(-30deg);
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* 动画定义 */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            nav li {
+                margin: 0;
+                text-align: center;
+            }
+
+            nav a {
+                display: block;
+                padding: 15px 0;
+                border-bottom: 1px solid #f5f5f5;
+            }
+
+            .cta-btn {
+                margin: 15px 0;
+                display: inline-block;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-active ul {
+                display: flex;
+            }
+        }
+
+        .watermark-notice {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+
+<body class="watermark">
+    <header>
+        <div class="header-container container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"><img src="photo/logo.jpg" weight=64 height=64 alt="logo"></span>
+                牛马手机壳
+            </a>
+
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="gallery.html">作品集</a></li>
+                    <li><a href="products.html">产品定制</a></li>
+                    <li><a href="copyright.html" class="active">版权声明</a></li>
+                    <li><a href="customize.html" class="cta-btn">定制设计</a></li>
+                </ul>
+            </nav>
+
+            <div class="menu-toggle" id="mobileMenu">
+                ☰
+            </div>
+        </div>
+    </header>
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobileMenu').addEventListener('click', function () {
+            document.getElementById('mainNav').classList.toggle('nav-active');
+        });
+
+        // 高亮当前页面导航
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('nav a');
+
+        navLinks.forEach(link => {
+            const linkPage = link.getAttribute('href');
+            if (currentPage === linkPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    </script>
+    <main class="container">
+        <h1>版权声明</h1>
+
+        <div class="copyright-content">
+            <h2>知识产权声明</h2>
+            <p>牛马手机壳网站（以下简称"本网站"）内所有原创插画作品（包括但不限于图片、图案、文字作品等）均受《中华人民共和国著作权法》及相关法律法规保护，其著作权归Summer（插画师）所有。</p>
+
+            <div class="watermark-notice">
+                <strong>水印保护提示：</strong>本网站所有作品图片均已添加数字水印，未经授权使用将被追踪。
+            </div>
+
+            <h2>使用授权说明</h2>
+            <p>1. 数字版使用权：购买数字版使用权的客户仅可将作品用于个人社交媒体头像或配图，不得用于商业用途。</p>
+            <p>2. 实体明信片：购买实体明信片仅获得实物产品所有权，作品的著作权仍归原作者所有。</p>
+            <p>3. 未经本网站明确书面授权，任何单位或个人不得擅自使用、复制、传播、修改、展示或以任何形式利用本网站的原创作品。</p>
+
+            <h2>侵权责任</h2>
+            <p>对于侵犯本网站作品著作权的行为，我们将依法追究其法律责任，包括但不限于要求停止侵权、赔礼道歉、赔偿损失等。</p>
+
+            <h2>联系方式</h2>
+            <p>如发现任何侵权行为或有授权合作需求，请联系：summerpainting@outlook.com</p>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 牛马手机壳 - 保留所有权利</p>
+        </div>
+    </footer>
+</body>
+
+</html>

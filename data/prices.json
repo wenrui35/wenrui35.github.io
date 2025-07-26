@@ -1,0 +1,18 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "type": "数字版使用权",
+            "authorization": "社交媒体头像/配图",
+            "price": 35,
+            "description": "可用于个人社交媒体头像或配图，不得用于商业用途"
+        },
+        {
+            "id": 2,
+            "type": "实体明信片",
+            "authorization": "含印刷+邮寄",
+            "price": 45,
+            "description": "包含高质量印刷明信片及全国邮寄服务"
+        }
+    ]
+}

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>牛马手机壳图片处理工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#8B5CF6',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .watermark-text {
+                transform: rotate(-30deg);
+                opacity: 0.35;
+                user-select: none;
+            }
+            .drop-area-active {
+                @apply border-primary bg-primary/5;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-inter text-dark min-h-screen flex flex-col">
+    <!-- 导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-picture-o text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-dark">牛马手机壳图片处理工具</h1>
+            </div>
+            <div class="text-sm text-gray-500">Alpha 1.3</div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- 介绍卡片 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 card-hover">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fa fa-info-circle text-primary mr-2"></i>
+                    图片水印添加工具
+                </h2>
+                <p class="text-gray-600 mb-4">
+                    上传图片，系统将自动为其添加水印并提供下载。水印默认设置为"牛马手机壳"，以倾斜30度的方式重复覆盖在图片上，透明度为35%。
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center text-gray-500">
+                        <i class="fa fa-check-circle text-secondary mr-2"></i>
+                        <span>支持JPG、PNG、BMP等多种格式</span>
+                    </div>
+                    <div class="flex items-center text-gray-500">
+                        <i class="fa fa-check-circle text-secondary mr-2"></i>
+                        <span>自动备份原始文件</span>
+                    </div>
+                    <div class="flex items-center text-gray-500">
+                        <i class="fa fa-check-circle text-secondary mr-2"></i>
+                        <span>可自定义水印文本</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 水印配置 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 card-hover">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fa fa-sliders text-primary mr-2"></i>
+                    水印配置
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="watermarkText" class="block text-sm font-medium text-gray-700 mb-1">水印文本</label>
+                        <input type="text" id="watermarkText" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" value="牛马手机壳" placeholder="输入水印文本">
+                    </div>
+                    <div>
+                        <label for="watermarkOpacity" class="block text-sm font-medium text-gray-700 mb-1">透明度</label>
+                        <div class="flex items-center">
+                            <input type="range" id="watermarkOpacity" min="0" max="100" value="35" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary">
+                            <span id="opacityValue" class="ml-2 text-sm text-gray-600">35%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文件上传区 -->
+            <div class="mb-8">
+                <div id="dropArea" class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center transition-all duration-300 hover:border-primary bg-white">
+                    <div class="max-w-md mx-auto">
+                        <i class="fa fa-cloud-upload text-5xl text-gray-400 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">拖放图片到此处上传</h3>
+                        <p class="text-gray-500 mb-6">或点击下方按钮选择图片文件 (支持JPG、PNG、BMP等格式)</p>
+                        <label class="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-md cursor-pointer transition-all duration-300 transform hover:scale-105">
+                            <i class="fa fa-file-image-o mr-2"></i>选择图片
+                            <input type="file" id="fileInput" class="hidden" accept="image/*" multiple>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 处理中状态 -->
+            <div id="processing" class="hidden mb-8 bg-white rounded-xl shadow-md p-6 text-center">
+                <div class="flex flex-col items-center justify-center">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-primary border-b-4 border-transparent mb-4"></div>
+                    <h3 class="text-xl font-bold mb-2">正在处理图片...</h3>
+                    <p class="text-gray-500" id="processingMessage">请稍候，我们正在为您的图片添加水印</p>
+                </div>
+            </div>
+
+            <!-- 预览区 -->
+            <div id="previewArea" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fa fa-image text-primary mr-2"></i>
+                        原始图片
+                    </h3>
+                    <div class="relative overflow-hidden rounded-lg border border-gray-200 aspect-video bg-gray-100 flex items-center justify-center">
+                        <img id="originalImage" src="" alt="原始图片预览" class="max-w-full max-h-full object-contain">
+                    </div>
+                    <div class="mt-4 flex justify-between">
+                        <div class="text-sm text-gray-500" id="originalImageSize">大小: --</div>
+                        <div class="text-sm text-gray-500" id="originalImageFormat">格式: --</div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fa fa-magic text-primary mr-2"></i>
+                        水印预览
+                    </h3>
+                    <div class="relative overflow-hidden rounded-lg border border-gray-200 aspect-video bg-gray-100 flex items-center justify-center">
+                        <div id="watermarkCanvasContainer" class="relative w-full h-full flex items-center justify-center">
+                            <canvas id="watermarkCanvas" class="max-w-full max-h-full"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between">
+                        <div class="text-sm text-gray-500" id="watermarkedImageSize">大小: --</div>
+                        <div class="text-sm text-gray-500" id="watermarkedImageFormat">格式: --</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 下载区 -->
+            <div id="downloadArea" class="hidden bg-white rounded-xl shadow-md p-6 mb-8 card-hover">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fa fa-download text-primary mr-2"></i>
+                    下载处理后的图片
+                </h3>
+                <div class="flex flex-wrap gap-4">
+                    <a id="downloadLink" href="#" class="inline-flex items-center justify-center bg-secondary hover:bg-secondary/90 text-white font-medium py-2 px-6 rounded-md transition-all duration-300 transform hover:scale-105">
+                        <i class="fa fa-download mr-2"></i>下载图片
+                    </a>
+                    <button id="processAnotherBtn" class="inline-flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-6 rounded-md transition-all duration-300">
+                        <i class="fa fa-plus mr-2"></i>处理另一张图片
+                    </button>
+                </div>
+            </div>
+
+            <!-- 历史记录 -->
+            <div id="historySection" class="bg-white rounded-xl shadow-md p-6 card-hover">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fa fa-history text-primary mr-2"></i>
+                    处理历史
+                </h3>
+                <div id="historyList" class="space-y-4">
+                    <div class="text-center text-gray-500 italic">暂无处理历史</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <i class="fa fa-picture-o text-primary text-xl"></i>
+                        <span class="font-bold text-lg">牛马手机壳图片处理工具</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">© 2025 版权所有</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                        <i class="fa fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                        <i class="fa fa-weixin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+                        <i class="fa fa-weibo text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化变量
+            let originalImage = null;
+            let processedImage = null;
+            let watermarkCanvas = document.getElementById('watermarkCanvas');
+            let ctx = watermarkCanvas.getContext('2d');
+            let historyItems = JSON.parse(localStorage.getItem('watermarkHistory') || '[]');
+            let historyList = document.getElementById('historyList');
+            
+            // 更新历史记录显示
+            updateHistoryDisplay();
+            
+            // 处理透明度滑块
+            const opacitySlider = document.getElementById('watermarkOpacity');
+            const opacityValue = document.getElementById('opacityValue');
+            
+            opacitySlider.addEventListener('input', function() {
+                opacityValue.textContent = `${this.value}%`;
+                if (originalImage) {
+                    applyWatermark();
+                }
+            });
+            
+            // 处理水印文本变化
+            const watermarkTextInput = document.getElementById('watermarkText');
+            watermarkTextInput.addEventListener('input', function() {
+                if (originalImage) {
+                    applyWatermark();
+                }
+            });
+            
+            // 文件拖放区域
+            const dropArea = document.getElementById('dropArea');
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.classList.add('drop-area-active');
+            }
+            
+            function unhighlight() {
+                dropArea.classList.remove('drop-area-active');
+            }
+            
+            // 处理拖放文件
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0) {
+                    handleFiles(files[0]);
+                }
+            }
+            
+            // 处理文件选择
+            const fileInput = document.getElementById('fileInput');
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    handleFiles(this.files[0]);
+                }
+            });
+            
+            // 处理另一个文件按钮
+            const processAnotherBtn = document.getElementById('processAnotherBtn');
+            processAnotherBtn.addEventListener('click', function() {
+                resetUI();
+            });
+            
+            // 处理文件
+            function handleFiles(file) {
+                // 检查文件类型
+                if (!file.type.match('image.*')) {
+                    alert('请选择图片文件!');
+                    return;
+                }
+                
+                // 显示处理中状态
+                document.getElementById('dropArea').classList.add('hidden');
+                document.getElementById('processing').classList.remove('hidden');
+                document.getElementById('processingMessage').textContent = `正在处理 ${file.name}...`;
+                
+                // 创建文件阅读器
+                const reader = new FileReader();
+                
+                // 读取完成后处理
+                reader.onload = function(e) {
+                    // 创建图片对象
+                    const img = new Image();
+                    img.onload = function() {
+                        // 保存原始图片
+                        originalImage = img;
+                        
+                        // 显示原始图片
+                        document.getElementById('originalImage').src = e.target.result;
+                        document.getElementById('originalImageSize').textContent = `大小: ${formatFileSize(file.size)}`;
+                        document.getElementById('originalImageFormat').textContent = `格式: ${file.type.split('/')[1].toUpperCase()}`;
+                        
+                        // 应用水印
+                        applyWatermark();
+                        
+                        // 更新UI
+                        setTimeout(() => {
+                            document.getElementById('processing').classList.add('hidden');
+                            document.getElementById('previewArea').classList.remove('hidden');
+                            document.getElementById('downloadArea').classList.remove('hidden');
+                        }, 500);
+                    };
+                    
+                    // 设置图片源
+                    img.src = e.target.result;
+                };
+                
+                // 读取文件
+                reader.readAsDataURL(file);
+            }
+            
+            // 应用水印
+            function applyWatermark() {
+                if (!originalImage) return;
+                
+                // 设置画布尺寸
+                watermarkCanvas.width = originalImage.width;
+                watermarkCanvas.height = originalImage.height;
+                
+                // 清空画布
+                ctx.clearRect(0, 0, watermarkCanvas.width, watermarkCanvas.height);
+                
+                // 绘制原始图片
+                ctx.drawImage(originalImage, 0, 0);
+                
+                // 获取水印配置
+                const watermarkText = document.getElementById('watermarkText').value || '牛马手机壳';
+                const opacity = document.getElementById('watermarkOpacity').value / 100;
+                
+                // 设置字体样式
+                ctx.font = `${Math.max(12, watermarkCanvas.width * 0.03)}px sans-serif`;
+                ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // 计算文本尺寸
+                const textMetrics = ctx.measureText(watermarkText);
+                const textWidth = textMetrics.width;
+                const textHeight = parseInt(ctx.font);
+                
+                // 设置水印间距
+                const spacing = Math.max(80, watermarkCanvas.width * 0.1);
+                
+                // 绘制水印
+                ctx.save();
+                ctx.rotate(-30 * Math.PI / 180);
+                
+                for (let y = -watermarkCanvas.height; y < watermarkCanvas.height * 2; y += spacing) {
+                    for (let x = -watermarkCanvas.width; x < watermarkCanvas.width * 2; x += spacing) {
+                        ctx.fillText(watermarkText, x, y);
+                    }
+                }
+                
+                ctx.restore();
+                
+                // 更新预览信息
+                watermarkCanvas.toBlob(blob => {
+                    document.getElementById('watermarkedImageSize').textContent = `大小: ${formatFileSize(blob.size)}`;
+                    document.getElementById('watermarkedImageFormat').textContent = `格式: PNG`;
+                    
+                    // 保存处理后的图片
+                    const reader = new FileReader();
+                    reader.onloadend = function() {
+                        processedImage = reader.result;
+                        
+                        // 更新下载链接
+                        const downloadLink = document.getElementById('downloadLink');
+                        downloadLink.href = processedImage;
+                        downloadLink.download = `wm_${Date.now()}.png`;
+                    };
+                    reader.readAsDataURL(blob);
+                });
+            }
+            
+            // 重置UI
+            function resetUI() {
+                document.getElementById('dropArea').classList.remove('hidden');
+                document.getElementById('previewArea').classList.add('hidden');
+                document.getElementById('downloadArea').classList.add('hidden');
+                document.getElementById('originalImage').src = '';
+                
+                originalImage = null;
+                processedImage = null;
+                
+                // 清空画布
+                ctx.clearRect(0, 0, watermarkCanvas.width, watermarkCanvas.height);
+            }
+            
+            // 下载链接点击事件
+            document.getElementById('downloadLink').addEventListener('click', function() {
+                if (processedImage) {
+                    // 添加到历史记录
+                    const timestamp = new Date().toLocaleString();
+                    const historyItem = {
+                        timestamp,
+                        originalSize: document.getElementById('originalImageSize').textContent,
+                        processedSize: document.getElementById('watermarkedImageSize').textContent,
+                        downloadUrl: processedImage
+                    };
+                    
+                    historyItems.unshift(historyItem);
+                    
+                    // 最多保存10条记录
+                    if (historyItems.length > 10) {
+                        historyItems = historyItems.slice(0, 10);
+                    }
+                    
+                    // 保存到本地存储
+                    localStorage.setItem('watermarkHistory', JSON.stringify(historyItems));
+                    
+                    // 更新历史记录显示
+                    updateHistoryDisplay();
+                }
+            });
+            
+            // 更新历史记录显示
+            function updateHistoryDisplay() {
+                if (historyItems.length === 0) {
+                    historyList.innerHTML = '<div class="text-center text-gray-500 italic">暂无处理历史</div>';
+                    return;
+                }
+                
+                historyList.innerHTML = '';
+                
+                historyItems.forEach((item, index) => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200';
+                    
+                    historyItem.innerHTML = `
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                            <div class="mb-2 md:mb-0">
+                                <div class="font-medium text-gray-800">处理于 ${item.timestamp}</div>
+                                <div class="text-sm text-gray-500">${item.originalSize} → ${item.processedSize}</div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <a href="${item.downloadUrl}" download="watermarked_image_${index}.png" class="text-primary hover:text-primary/80 text-sm flex items-center">
+                                    <i class="fa fa-download mr-1"></i> 下载
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    
+                    historyList.appendChild(historyItem);
+                });
+            }
+            
+            // 格式化文件大小
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        });
+    </script>
+</body>
+</html>
+    
