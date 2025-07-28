@@ -4,15 +4,43 @@
             "id": 1,
             "title": "示例作品1",
             "description": "这是一幅示例插画作品，展示了我们的设计风格。",
-            "imageUrl": "assets/images/2024/07-month/sample1.jpg",
+            "imageUrl": "assets/images/works/works1.jpg",
             "createdDate": "2024-07-15"
         },
         {
             "id": 2,
             "title": "示例作品2",
             "description": "这是另一幅示例插画作品，展示了我们的创意理念。",
-            "imageUrl": "assets/images/2024/07-month/sample2.jpg",
+            "imageUrl": "assets/images/works/works2.jpg",
             "createdDate": "2024-07-20"
+                },
+        {
+            "id": 3,
+            "title": "示例作品3",
+            "description": "这是第三幅示例作品，展示更多设计可能性",
+            "imageUrl": "assets/images/works/works3.jpg",
+            "createdDate": "2024-07-25"
+        },
+        {
+            "id": 4,
+            "title": "示例作品4",
+            "description": "系列作品的第四幅，体现品牌一致性",
+            "imageUrl": "assets/images/works/works4.jpg",
+            "createdDate": "2024-07-26"
+        },
+        {
+            "id": 5,
+            "title": "示例作品5",
+            "description": "最新创作风格尝试作品",
+            "imageUrl": "assets/images/works/works5.jpg",
+            "createdDate": "2024-07-27"
+        },
+        {
+            "id": 6,
+            "title": "示例作品6",
+            "description": "客户定制特别版设计方案",
+            "imageUrl": "assets/images/works/works6.jpg",
+            "createdDate": "2024-07-28"
         }
     ]
 }

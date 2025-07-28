@@ -237,7 +237,7 @@
     <header>
         <div class="header-container container">
             <a href="index.html" class="logo">
-                <span class="logo-icon"><img src="photo/logo.jpg" weight=64 height=64 alt="logo"></span>
+                <span class="logo-icon"><img src="photo/logo1.jpg" weight=64 height=64 alt="logo"></span>
                 牛马手机壳
             </a>
 
@@ -296,38 +296,70 @@
         </div>
     </footer>
     <script>
-        // 从data/works.json加载作品数据
+        // 硬编码作品数据
         document.addEventListener('DOMContentLoaded', function () {
             const container = document.getElementById('works-container');
+            const worksData = {
+                works: [
+                    {
+                        title: '夏日海滩',
+                        description: '阳光沙滩与椰树组成的清凉夏日主题',
+                        createdDate: '2024-03-15',
+                        imageUrl: 'assets/images/works/works1.jpg'
+                    },
+                    {
+                        title: '星空幻想',
+                        description: '梦幻星空与银河交织的抽象艺术风格',
+                        createdDate: '2024-04-02',
+                        imageUrl: 'assets/images/works/works2.jpg'
+                    },
+                    {
+                        title: '秋日枫叶',
+                        description: '金秋红叶与山峦叠嶂的自然风光',
+                        createdDate: '2024-05-10',
+                        imageUrl: 'assets/images/works/works3.jpg'
+                    },
+                    {
+                        title: '冬日暖阳',
+                        description: '雪景小屋与温暖壁炉的冬季主题',
+                        createdDate: '2024-06-01',
+                        imageUrl: 'assets/images/works/works4.jpg'
+                    },
+                    {
+                        title: '春之花园',
+                        description: '百花齐放与蝴蝶飞舞的春日景象',
+                        createdDate: '2024-06-20',
+                        imageUrl: 'assets/images/works/works5.jpg'
+                    },
+                    {
+                        title: '都市夜景',
+                        description: '现代都市霓虹灯下的璀璨夜景',
+                        createdDate: '2024-07-05',
+                        imageUrl: 'assets/images/works/works6.jpg'
+                    }
+                ]
+            };
 
-            fetch('data/works.json')
-                .then(response => response.json())
-                .then(data => {
-                    // 清空占位内容
-                    container.innerHTML = '';
+            // 清空占位内容
+            container.innerHTML = '';
 
-                    // 遍历作品数据并生成HTML
-                    data.works.forEach(work => {
-                        const workItem = document.createElement('div');
-                        workItem.className = 'gallery-item';
-                        workItem.innerHTML = `
-                            <div class="image-container">
-                                <img src="${work.imageUrl}" alt="${work.title}">
-                                <div class="watermark">牛马手机壳 © ${new Date().getFullYear()}</div>
-                            </div>
-                            <div class="info">
-                                <h3>${work.title}</h3>
-                                <p>${work.description}</p>
-                                <small>创作日期: ${work.createdDate}</small>
-                            </div>
-                        `;
-                        container.appendChild(workItem);
-                    });
-                })
-                .catch(error => {
-                    console.error('加载作品数据失败:', error);
-                    container.innerHTML = '<p class="error-message">作品数据加载失败，请稍后重试。</p>';
-                });
+            // 遍历作品数据并生成HTML
+            worksData.works.forEach(work => {
+                const workItem = document.createElement('div');
+                workItem.className = 'gallery-item';
+                workItem.innerHTML = `
+                    <div class="image-container">
+                        <img src="${work.imageUrl}" alt="${work.title}">
+                        <div class="watermark">牛马手机壳 © ${new Date().getFullYear()}</div>
+                    </div>
+                    <div class="info">
+                        <h3>${work.title}</h3>
+                        <p>${work.description}</p>
+                        <small>创作日期: ${work.createdDate}</small>
+                    </div>
+                `;
+                container.appendChild(workItem);
+            });
         });
     </script>
 </body>
